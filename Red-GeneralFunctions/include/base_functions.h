@@ -3,20 +3,25 @@
 class Value{
 
 };
+
 class Capability{
 
 
 };
+
+
 class Capabilities{
     public:
         void add_capability(const Capability * cap);
-    
+    protected:
+        std::vector<const Capability*> capabilities;
 };
 
 class Event{
     public:
         Event(const RedBaseAsync * bc): baseComp(bc){}
         void call(){
+            //condition for async goes there
             baseComp->async_hook();
         }
     protected:
@@ -25,8 +30,8 @@ class Event{
 
 class SyncEvent{
     public:
-        Event(): baseComps(){}
-        Event(std::vector<const RedBaseSync *> bcs): baseComps(bcs){}
+        Event(){}
+        Event(std::vector<const RedBaseSync*> bcs): baseComps(bcs){}
         void addSyncEvent(const RedBaseSync& rbs){
             baseComps.push_back(&rbs);
         }
@@ -44,7 +49,7 @@ class RedBase{
     public:
         void setup_hook();
         void set_property(const Capability * cap, const Value * value);
-        const Capabilities * discover();
+        const Capabilities * discovery();
     protected:
         Capabilities capabilities;
 };
@@ -58,3 +63,4 @@ class RedBaseSync: public RedBase{
     public:
         void sync_hook();
 };
+
