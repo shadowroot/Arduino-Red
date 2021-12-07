@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/jonny/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "/home/jonny/.platformio/**"
+                "/home/jonny/.platformio/**",
+                "/usr/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

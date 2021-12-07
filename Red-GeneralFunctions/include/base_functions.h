@@ -30,8 +30,8 @@ class Event{
 
 class SyncEvent{
     public:
-        Event(){}
-        Event(std::vector<const RedBaseSync*> bcs): baseComps(bcs){}
+        SyncEvent(){}
+        SyncEvent(std::vector<const RedBaseSync*> bcs): baseComps(bcs){}
         void addSyncEvent(const RedBaseSync& rbs){
             baseComps.push_back(&rbs);
         }
