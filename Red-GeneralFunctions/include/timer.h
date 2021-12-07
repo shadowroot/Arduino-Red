@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+using namespace std;
+
 #define MAX_TIMERS 10
 
 template<typename T>
@@ -29,6 +31,20 @@ class Timer{
             return -1;
         }
 
+        bool shouldStay(){
+            if(repeats){
+                return true;
+            }
+            else if(!lastRun){
+                return true;
+            }
+            return false;
+        }
+        //comparator < for lower_bound 
+        bool operator() (const Timer& l, const Timer& t){
+            return l.nextTime() < t.nextTime()
+        }
+
     private:
         unsigned long lastRun;
         unsigned long timeInterval;
@@ -38,20 +54,25 @@ class Timer{
 
 class AsyncTimer{
     public:
-        AsyncTimer() : timers(MAX_TIMERS){}
+        AsyncTimer(): timers(MAX_TIMERS){
+        }
         void loop(){
-            std::vector<Timer *> newTimers;
+            vector<const Timer *> newTimers;
             for(auto t = timers.begin(); t != timers.end(); ++t){
                 if(t->run()){
-                    auto ptr = std::lower_bound(newTimers.begin(), newTimers.end(), t);
-                    newTimers.insert(ptr, t);
+                    if(t->shouldStay()){
+                        auto ptr = lower_bound(newTimers.begin(), newTimers.end(), t);
+                        newTimers.insert(ptr, t);
+                    }
                 }
                 else{
-                    newTimers.push_back(t);
+                    if(t->shouldStay()){
+                        newTimers.push_back(t);
+                    }
                 }
             }
             timers = newTimers;
         }
     protected:
-       std::vector<Timer *> timers;
+       vector<const Timer *> timers;
 };
