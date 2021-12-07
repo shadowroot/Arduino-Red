@@ -10,22 +10,23 @@ class Timer{
                 T fn=nullptr): 
             lastRun(0), timeInterval(interval), repeats(repeats), fn(fn){}
         
-        void next() {
-            if(lastRun == 0){
-                fn();
-                return;
-            }
-            if(repeats || lastRun == 0){
+        int run() {
+            if(repeats || !lastRun){
                 unsigned long now = millis();
                 if((now-lastRun) >= timeInterval){
                     fn();
                     lastRun = now;
+                    return true;
                 }
             }
+            return false;
         }
 
         unsigned long nextTime(){
-            return millis() - lastRun;
+            if(repeats || lastRun == 0){
+                return millis() - lastRun;
+            }
+            return -1;
         }
 
     private:
@@ -37,8 +38,20 @@ class Timer{
 
 class AsyncTimer{
     public:
-        AsyncTimer(){}
-        
+        AsyncTimer() : timers(MAX_TIMERS){}
+        void loop(){
+            std::vector<Timer *> newTimers;
+            for(auto t = timers.begin(); t != timers.end(); ++t){
+                if(t->run()){
+                    auto ptr = std::lower_bound(newTimers.begin(), newTimers.end(), t);
+                    newTimers.insert(ptr, t);
+                }
+                else{
+                    newTimers.push_back(t);
+                }
+            }
+            timers = newTimers;
+        }
     protected:
-       Timer * timers[MAX_TIMERS]
+       std::vector<Timer *> timers;
 };
