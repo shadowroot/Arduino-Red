@@ -1,0 +1,9 @@
+control_flow:
+  loop:
+    servo_move_1: 200
+    wait: 1000
+
+servo_move_1:
+  - fn: servo_move
+  - servo_pin: D4
+

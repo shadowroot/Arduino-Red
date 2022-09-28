@@ -1,0 +1,27 @@
+nano: {
+  pin_capabilities: {
+    A0: [ANALOG],
+    A1: [ANALOG],
+    A2: [ANALOG],
+    A3: [ANALOG],
+    A4: [ANALOG, SDA, I2C],
+    A5: [ANALOG, SCL, I2C],
+    A6: [ANALOG],
+    A7: [ANALOG],
+    D0: [DIGITAL, RX], 
+    D1: [DIGITAL, TX],
+    D2: [DIGITAL, IRQP], #interrupt pin
+    D3: [DIGITAL, IRQP, PWM], #interrupt pin
+    D4: [DIGITAL],
+    D5: [DIGITAL, PWM], #interrupt pin
+    D6: [DIGITAL, PWM],
+    D7: [DIGITAL],
+    D8: [DIGITAL],
+    D9: [DIGITAL, PWM],
+    D10: [DIGITAL, SPI, SS],
+    D11: [DIGITAL, PWM, SPI, MOSI],
+    D12: [DIGITAL, SPI, MISO],
+    D13: [DIGITAL, SPI, SCK, BUILDIN_LED],
+  }
+
+}
